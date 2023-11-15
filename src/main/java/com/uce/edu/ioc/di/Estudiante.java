@@ -12,13 +12,12 @@ public class Estudiante {
 	private String apellido;
 	private BigDecimal salario;
 	
-	
-	
 	@Override
 	public String toString() {
 		return "Estudiante [cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", salario=" + salario
 				+ "]";
 	}
+	
 	//metodos getter y setter
 	public String getCedula() {
 		return cedula;
