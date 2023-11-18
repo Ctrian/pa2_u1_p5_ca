@@ -1,5 +1,7 @@
 package com.uce.edu.repository;
 
+import java.util.List;
+
 import com.uce.edu.repository.modelo.Materia;
 
 public interface IMateriaRepository {
@@ -11,4 +13,7 @@ public interface IMateriaRepository {
 
 	// se borra a partir de un criterio
 	public void borrar(String codigo);
+
+
+	List<Materia> seleccionarTodos();
 }
