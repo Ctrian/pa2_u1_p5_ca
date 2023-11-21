@@ -21,40 +21,29 @@ public class Pa2U1P5CaApplication implements CommandLineRunner {
 	@Autowired
 	private Materia materia;
 	
+	@Autowired
+	private Materia materia1;
+	
+	@Autowired
+	private Materia materia2;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U1P5CaApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
+		this.materia.setNombre("AvanzadaII");
+		System.out.println(this.materia);
 		
-		this.materia.setCodigo("M1");
-		this.materia.setNombre("P. Avanzada");
-		this.materia.setNumeroCredito(10);
+		System.out.println(this.materia1);
+		this.materia1.setNombre("Nuevo nombre");
+		System.out.println(this.materia1);
+		System.out.println(this.materia);
 		
-		this.iMateriaService.registrar(materia);
-		
-		System.out.println("Reporte inicio");
-		
-		List<Materia> reporte = this.iMateriaService.buscarTodos();
-		for(Materia mat : reporte) {
-			System.out.println(mat);
-		}
-		
-		System.out.println("Reporte Fin");
-		
-		Materia mate = this.iMateriaService.buscar("M1");
-		System.out.println(mate);
-		
-		mate.setNumeroCredito(20);
-		this.iMateriaService.actualizar(mate);
-		Materia mate2 = this.iMateriaService.buscar("M1");
-		//Este materia es ya de la Base de Datos
-		System.out.println(mate2);
-		
-		this.iMateriaService.eliminar("M1");
-		
-		mate2 = this.iMateriaService.buscar("M1");
-		System.out.println(mate2);
+		this.materia2.setNombre("Nombre final");
+		System.out.println(this.materia2);
+		System.out.println(this.materia1);
+		System.out.println(this.materia);
 	}
 }
