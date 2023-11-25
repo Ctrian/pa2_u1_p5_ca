@@ -5,13 +5,19 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class Transferencia {
 	private String numero;
 	private LocalDateTime fecha;
 	private BigDecimal monto;
 	private CuentaBancaria cuentaOrigen;
 	private CuentaBancaria cuentaDestino;
+
+	@Override
+	public String toString() {
+		return "Transferencia [numero=" + numero + ", fecha=" + fecha + ", monto=" + monto + ", cuentaOrigen="
+				+ cuentaOrigen + ", cuentaDestino=" + cuentaDestino + "]";
+	}
 
 	// getters and setter
 	public String getNumero() {

@@ -4,11 +4,17 @@ import java.math.BigDecimal;
 
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class CuentaBancaria {
 	private String numero;
 	private String cedulaPropietario;
 	private BigDecimal saldo;
+
+	@Override
+	public String toString() {
+		return "CuentaBancaria [numero=" + numero + ", cedulaPropietario=" + cedulaPropietario + ", saldo=" + saldo
+				+ "]";
+	}
 
 	// getters and setter
 	public String getNumero() {

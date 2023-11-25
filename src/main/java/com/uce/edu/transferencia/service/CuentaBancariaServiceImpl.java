@@ -21,7 +21,7 @@ public class CuentaBancariaServiceImpl implements ICuentaBancariaService {
 	public void guardar(CuentaBancaria cuentaBancaria) {
 		// TODO Auto-generated method stub
 		this.bancariaRepository.insertar(cuentaBancaria);
-		;
+		
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.uce.edu.transferencia.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,16 +50,39 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 	public void realizar(String numeroOrigen, String numeroDestino, BigDecimal monto) {
 		// TODO Auto-generated method stub
 		// 1.Buscar cuenta de origen
-		CuentaBancaria cuentaBancaria = bancariaRepository.seleccionar(numeroOrigen);
+		CuentaBancaria ctaOrigen = this.bancariaRepository.seleccionar(numeroOrigen);
 		// 2. Consultar el saldo
+		BigDecimal saldoOrigen = ctaOrigen.getSaldo();
 		// 3. Validar el saldo
-		// 4. Restar el monto
-		// 5. Actualizar cuenta origen
-		// 6. Buscar cta destino
-		// 7. Consultar el saldo
-		// 8. Sumar el monto
-		// 9. Actualizar cta destino
-		// 10. Crear la tranferencia
+		if(saldoOrigen.compareTo(monto)>=0) {
+			// 4. Restar el monto
+			BigDecimal nuevoSaldoOrigen = saldoOrigen.subtract(monto);
+			// 5. Actualizar cuenta origen
+			ctaOrigen.setSaldo(nuevoSaldoOrigen);
+			this.bancariaRepository.actualizar(ctaOrigen);
+			// 6. Buscar cta destino
+			CuentaBancaria ctaDestino = this.bancariaRepository.seleccionar(numeroDestino);
+			// 7. Consultar el saldo
+			BigDecimal saldoDestino = ctaDestino.getSaldo();
+			// 8. Sumar el monto
+			BigDecimal nuevoSaldoDestino = saldoDestino.add(monto);
+			// 9. Actualizar cta destino
+			ctaDestino.setSaldo(nuevoSaldoDestino);
+			this.bancariaRepository.actualizar(ctaDestino);
+			// 10. Crear la tranferencia
+			Transferencia transferencia = new Transferencia();
+			transferencia.setCuentaOrigen(ctaOrigen);
+			transferencia.setCuentaDestino(ctaDestino);
+			transferencia.setFecha(LocalDateTime.now());
+			transferencia.setMonto(monto);
+			transferencia.setNumero("123123123");
+			
+			this.iTransferenciaRepository.insertar(transferencia);
+			System.out.println("Transferencia realizada con Exito!");
+		}else {
+			System.out.println("Saldo no disponible");
+		}
+		
 
 	}
 
