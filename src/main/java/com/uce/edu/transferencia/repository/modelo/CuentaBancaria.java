@@ -20,7 +20,7 @@ public class CuentaBancaria {
 	public String getNumero() {
 		return numero;
 	}
-
+	
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}

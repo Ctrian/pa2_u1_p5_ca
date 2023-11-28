@@ -2,6 +2,8 @@ package com.uce.edu.transferencia.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,14 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 
 	@Autowired
 	private ITransferenciaRepository iTransferenciaRepository;
-	
+
 	@Autowired
 	private ICuentaBancariaRepository bancariaRepository;
 
+	private BigDecimal aux = new BigDecimal("0");
+
 	@Override
-	public Transferencia buscar(String numero) {
+	public Transferencia buscar(BigDecimal numero) {
 		// TODO Auto-generated method stub
 		return this.iTransferenciaRepository.seleccionar(numero);
 	}
@@ -30,7 +34,6 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 	public void guardar(Transferencia transferencia) {
 		// TODO Auto-generated method stub
 		this.iTransferenciaRepository.insertar(transferencia);
-
 	}
 
 	@Override
@@ -40,21 +43,26 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 	}
 
 	@Override
-	public void eliminar(String numero) {
+	public void eliminar(BigDecimal numero) {
 		// TODO Auto-generated method stub
 		this.iTransferenciaRepository.eliminar(numero);
 
 	}
 
 	@Override
-	public void realizar(String numeroOrigen, String numeroDestino, BigDecimal monto) {
+	public BigDecimal nroFcat(BigDecimal bigDecimal) {
 		// TODO Auto-generated method stub
+		return this.iTransferenciaRepository.nroFcat(bigDecimal);
+	}
+
+	@Override
+	public void realizar(String numeroOrigen, String numeroDestino, BigDecimal monto) {
 		// 1.Buscar cuenta de origen
 		CuentaBancaria ctaOrigen = this.bancariaRepository.seleccionar(numeroOrigen);
 		// 2. Consultar el saldo
 		BigDecimal saldoOrigen = ctaOrigen.getSaldo();
 		// 3. Validar el saldo
-		if(saldoOrigen.compareTo(monto)>=0) {
+		if (saldoOrigen.compareTo(monto) >= 0) {
 			// 4. Restar el monto
 			BigDecimal nuevoSaldoOrigen = saldoOrigen.subtract(monto);
 			// 5. Actualizar cuenta origen
@@ -75,15 +83,21 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 			transferencia.setCuentaDestino(ctaDestino);
 			transferencia.setFecha(LocalDateTime.now());
 			transferencia.setMonto(monto);
-			transferencia.setNumero("123123123");
-			
+			transferencia.setNumero(aux);
+
 			this.iTransferenciaRepository.insertar(transferencia);
+			aux = aux.add(BigDecimal.ONE);
 			System.out.println("Transferencia realizada con Exito!");
-		}else {
+		} else {
 			System.out.println("Saldo no disponible");
 		}
-		
+		System.out.println("No de transferencia: " + this.iTransferenciaRepository.nroFcat(aux));
 
 	}
 
+	@Override
+	public List<Transferencia> buscarTodos() {
+		// TODO Auto-generated method stub
+		return this.iTransferenciaRepository.reporteTransferencia();
+	}
 }
