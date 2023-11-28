@@ -16,11 +16,7 @@ public class CuentaBancariaRepositoryImpl implements ICuentaBancariaRepository {
 
 		for (CuentaBancaria cuenta : base) {
 			if (cuenta.getNumero().equals(numero)) {
-				CuentaBancaria cta = new CuentaBancaria();
-				cta.setCedulaPropietario(cuenta.getCedulaPropietario());
-				cta.setNumero(cuenta.getNumero());
-				cta.setSaldo(cuenta.getSaldo());
-				return cta;
+				return cuenta;
 			}
 		}
 		return null;
@@ -51,7 +47,7 @@ public class CuentaBancariaRepositoryImpl implements ICuentaBancariaRepository {
 	@Override
 	public void eliminar(String numero) {
 		// TODO Auto-generated method stub
-		CuentaBancaria cuentaBancaria = this.seleccionarEliminar(numero);
+		CuentaBancaria cuentaBancaria = this.seleccionar(numero);
 		base.remove(cuentaBancaria);
 	}
 

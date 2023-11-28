@@ -23,58 +23,40 @@ public class Pa2U1P5CaApplication implements CommandLineRunner {
 
 	@Autowired
 	private ITransferenciaService iTransferenciaService;
-	
+
 	@Autowired
 	private ICuentaBancariaService bancariaService;
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U1P5CaApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		//1. Crear cuentas
+		// 1. Crear cuentas
 		CuentaBancaria ctaOrigen = new CuentaBancaria();
 		ctaOrigen.setCedulaPropietario("156453121354");
 		ctaOrigen.setNumero("1234");
 		ctaOrigen.setSaldo(new BigDecimal(100));
 		this.bancariaService.guardar(ctaOrigen);
-		
+
 		CuentaBancaria ctaDestino = new CuentaBancaria();
 		ctaDestino.setCedulaPropietario("14561231546");
 		ctaDestino.setNumero("5678");
 		ctaDestino.setSaldo(new BigDecimal(200));
 		this.bancariaService.guardar(ctaDestino);
-		
+
 		this.iTransferenciaService.realizar("1234", "5678", new BigDecimal(30));
 		System.out.println(ctaOrigen);
 		System.out.println(ctaDestino);
-		
+
 		this.iTransferenciaService.realizar("5678", "1234", new BigDecimal(50));
 		System.out.println(ctaOrigen);
 		System.out.println(ctaDestino);
-		
+
 		this.iTransferenciaService.realizar("5678", "1234", new BigDecimal(10));
 		System.out.println(ctaOrigen);
 		System.out.println(ctaDestino);
 		
-		//Construir un reporte del estado de cuenta de todas las transferencias
-//		List<Transferencia> lista = this.iTransferenciaService.buscarTodos();
-//		int indice = 0;
-//		for(Transferencia trans : lista){
-//		indice++;
-//		System.out.println(indice + ":" + trans);
-//		}
-		
-		this.iTransferenciaService.buscarTodos();		
-//		CuentaBancaria ctaOrigen1 = this.bancariaService.buscar("1234");
-//		System.out.println(ctaOrigen1);
-//		
-//		
-//		CuentaBancaria ctaDestino1 = this.bancariaService.buscar("5678");
-//		System.out.println(ctaDestino1);
-		
-		//deposito
-		System.out.println(this.bancariaService.deposito("1234", new BigDecimal(10)));
 	}
 }
