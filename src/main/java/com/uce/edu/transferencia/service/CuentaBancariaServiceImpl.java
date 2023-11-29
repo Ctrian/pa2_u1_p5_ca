@@ -43,9 +43,8 @@ public class CuentaBancariaServiceImpl implements ICuentaBancariaService {
 		// TODO Auto-generated method stub
 		CuentaBancaria ctaOrigen = new CuentaBancaria();
 		ctaOrigen = this.bancariaRepository.seleccionar(numero);
-		BigDecimal impuesto = monto.multiply(monto.multiply(new BigDecimal(0.9)));
-		
-		BigDecimal nuevoSaldo = ctaOrigen.getSaldo().subtract(impuesto);
+		BigDecimal impuesto = monto.multiply(new BigDecimal(0.10));
+		BigDecimal nuevoSaldo = ctaOrigen.getSaldo().subtract(impuesto.multiply(monto));
 		ctaOrigen.setSaldo(nuevoSaldo);
 		this.bancariaRepository.actualizar(ctaOrigen);
 		return ctaOrigen;

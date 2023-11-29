@@ -22,16 +22,6 @@ public class TransferenciaRepositoryImpl implements ITransferenciaRepository {
 		}
 		return null;
 	}
-//	@Override
-//	public Transferencia seleccionar(String numero) {
-//
-//		for (Transferencia cuenta : base) {
-//			if (cuenta.getNumero().equals(numero)) {
-//				return cuenta;
-//			}
-//		}
-//		return null;
-//	}
 
 	@Override
 	public void insertar(Transferencia transferencia) {
