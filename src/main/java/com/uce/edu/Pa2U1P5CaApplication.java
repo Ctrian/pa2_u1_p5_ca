@@ -1,5 +1,6 @@
 package com.uce.edu;
 
+import java.lang.reflect.InaccessibleObjectException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.uce.edu.inventario.repository.modelo.Bodega;
+import com.uce.edu.inventario.repository.modelo.Inventario;
+import com.uce.edu.inventario.repository.modelo.Producto;
+import com.uce.edu.inventario.service.IInventarioService;
+import com.uce.edu.inventario.service.IProductoService;
 import com.uce.edu.ioc.di.Estudiante;
 import com.uce.edu.repository.modelo.Materia;
 import com.uce.edu.service.IMateriaService;
@@ -20,9 +26,12 @@ import com.uce.edu.transferencia.service.ITransferenciaService;
 
 @SpringBootApplication
 public class Pa2U1P5CaApplication implements CommandLineRunner {
-//	DI por atributo
+	
 	@Autowired
-	private ITransferenciaService iTransferenciaService;
+	private IProductoService iProductoService;
+	
+	@Autowired
+	private IInventarioService iInventarioService;
 	
 //	DI por constructor
 //	@Autowired
@@ -36,8 +45,6 @@ public class Pa2U1P5CaApplication implements CommandLineRunner {
 //		this.iTransferenciaService = iTransferenciaService;
 //	}
 
-	@Autowired
-	private ICuentaBancariaService bancariaService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U1P5CaApplication.class, args);
@@ -45,34 +52,46 @@ public class Pa2U1P5CaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		// 1. Crear cuentas
-		CuentaBancaria ctaOrigen = new CuentaBancaria();
-		ctaOrigen.setCedulaPropietario("156453121354");
-		ctaOrigen.setNumero("1234");
-		ctaOrigen.setSaldo(new BigDecimal(100));
-		this.bancariaService.guardar(ctaOrigen);
-
-		CuentaBancaria ctaDestino = new CuentaBancaria();
-		ctaDestino.setCedulaPropietario("14561231546");
-		ctaDestino.setNumero("5678");
-		ctaDestino.setSaldo(new BigDecimal(200));
-		this.bancariaService.guardar(ctaDestino);
-
-		this.iTransferenciaService.realizar("1234", "5678", new BigDecimal(30));
-		System.out.println(ctaOrigen);
-		System.out.println(ctaDestino);
-		this.iTransferenciaService.realizar("5678", "1234", new BigDecimal(50));
-		System.out.println(ctaOrigen);
-		System.out.println(ctaDestino);
-		this.iTransferenciaService.realizar("5678", "1234", new BigDecimal(10));
-		System.out.println(ctaOrigen);
-		System.out.println(ctaDestino);
-
-		// reporte
-		this.iTransferenciaService.buscarTodos();
-
-		// deposito
-		System.out.println(this.bancariaService.deposito("1234", new BigDecimal(10)));
-
+		// Crear un prodcuto
+		Producto p1 = new Producto();
+		p1.setCodigoBarras("123");
+		p1.setNombre("HP 15 laptot");
+		p1.setStock(0);
+		
+		this.iProductoService.guardar(p1);
+		
+		Producto p2 = new Producto();
+		p2.setCodigoBarras("546");
+		p2.setNombre("Teclado HP");
+		p2.setStock(0);
+		
+		this.iProductoService.guardar(p2);
+		
+		Bodega b1 = new Bodega();
+		b1.setCapacidad(100);
+		b1.setCodigo("132");
+		b1.setDireccion("Izq");
+		b1.setNombre("Bodega 1");
+		
+		System.out.println("Antes de la insercion");
+		Producto p = this.iProductoService.buscar("123");
+		Producto q = this.iProductoService.buscar("546");
+		System.out.println(p);
+		System.out.println(q);
+		
+		this.iInventarioService.registrar("132", "123", 50);
+		//System.out.println(p1);
+		
+		this.iInventarioService.registrar("132", "546", 100);
+		//System.out.println(p2);
+		
+		this.iInventarioService.registrar("132", "123", 20);
+		//System.out.println(p1);
+		
+		System.out.println("Después de la insercion");
+		System.out.println(p);
+		System.out.println(q);
+		
+		
 	}
 }

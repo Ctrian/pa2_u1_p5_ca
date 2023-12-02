@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Inventario {
+
 	private String codigo;
 	private LocalDateTime fechaIngreso;
 	private Bodega bodega;
